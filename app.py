@@ -37,7 +37,7 @@ def choice1():
 def choice2():
     with st.spinner("Executing API calls and collecting responses. This may take a moment..."):
         user_query = nb.dcim.interfaces.all()
-    return user_target, user_query
+    return user_query
 
 def choice3():
     # Query user for Device ID
@@ -45,7 +45,7 @@ def choice3():
     st.write("Querying: ", device_id)
 
     # Execute code only if the (conditional) "Submit" button is pushed
-    while not st.button("Submit"):
+    if st.button("Submit"):
 
         # Get the device name for the provided device id
         device_name = nb.dcim.devices.get(id=device_id)
@@ -75,8 +75,8 @@ def choice4():
         if rack == None:
             st.write(rack_name, " does not have an entry. Please provide a valid Rack Name.")
             exit()
-            
-        with st.spinner("Querying Devices in Rack ", device_id, " > > > > ", device_name, " ..."):
+
+        with st.spinner("Querying Devices in Rack ", rack, " ..."):
             # API call for interfaces with a filter based on the device name
             user_query = nb.dcim.devices.filter(rack_id=rack.id)
 
