@@ -10,12 +10,9 @@ from datetime import datetime
 from dotenv import load_dotenv
 from pynetbox import api
 
-st.title("Netbox-Toolbox")
-
-# Some quick Streamlit Notes:
-# 1 - Execute your Streamlit code via command line: streamlit run app.py
-# 2 - Set up SSH tunnel to localhost from your terminal: ssh -L 50000:localhost:8501 <SERVER-IP>
-# 3 - In your web browser, navigate to: http://localhost:50000/
+#######################
+# GLOBAL VARS - BEGIN #
+#######################
 
 # Load environment variables from the .env file
 load_dotenv()
@@ -27,9 +24,13 @@ api_token = os.getenv("NETBOX_API_TOKEN")
 # Connect to the NetBox API
 nb = api(url=netbox_url, token=api_token, threading=True)
 
-#########################
-# FUNCTION LIST - BEGIN #
-#########################
+#####################
+# GLOBAL VARS - END #
+#####################
+
+############################
+# HELPER FUNCTIONS - BEGIN #
+############################
 
 def wait_for_user_input():
   st.checkbox("<- Click to Submit!", key="clicked")
@@ -128,38 +129,55 @@ def print_output(user_query, user_target):
     # Print to Streamlit
     st.write(df)
 
-#######################
-# FUNCTION LIST - END #
-#######################
+##########################
+# HELPER FUNCTIONS - END #
+##########################
 
-# Prompt the user for the information they would like to see
-choice = st.selectbox("What information would you like to see?", ["1 - All Devices",
-                                                                  "2 - All Interfaces",
-                                                                  "3 - Interfaces on a specifc Device",
-                                                                  "4 - Devices in a specific Rack"])
+################
+# MAIN - BEGIN #
+################
 
+def main():   
+    # Some quick Streamlit Notes:
+    # 1 - Execute your Streamlit code via command line: streamlit run app.py
+    # 2 - Set up SSH tunnel to localhost from your terminal: ssh -L 50000:localhost:8501 <SERVER-IP>
+    # 3 - In your web browser, navigate to: http://localhost:50000/
 
-# Execute code only if the (conditional) "Start" button is pushed
-if st.button("Start"):
+    st.title("Netbox-Toolbox")
 
-    if choice == "1 - All Devices":
-        user_query = choice1()
-        user_target = "Devices"
-        print_output(user_query, user_target)
+    # Prompt the user for the information they would like to see
+    choice = st.selectbox("What information would you like to see?", ["1 - All Devices",
+                                                                    "2 - All Interfaces",
+                                                                    "3 - Interfaces on a specifc Device",
+                                                                    "4 - Devices in a specific Rack"])
 
-    elif choice == "2 - All Interfaces":
-        user_query = choice2()
-        user_target = "Interfaces"
-        print_output(user_query, user_target)
+    # Execute code only if the (conditional) "Start" button is pushed
+    if st.button("Start"):
 
-    elif choice == "3 - Interfaces on a specifc Device":
-        user_query = choice3()
-        user_target = "Devices"
-        print_output(user_query, user_target)
+        if choice == "1 - All Devices":
+            user_query = choice1()
+            user_target = "Devices"
+            print_output(user_query, user_target)
 
-    elif choice == "4 - Devices in a specific Rack":
-        user_query = choice4()
-        user_target = "Interfaces"
-        print_output(user_query, user_target)
+        elif choice == "2 - All Interfaces":
+            user_query = choice2()
+            user_target = "Interfaces"
+            print_output(user_query, user_target)
 
-# End
+        elif choice == "3 - Interfaces on a specifc Device":
+            user_query = choice3()
+            user_target = "Devices"
+            print_output(user_query, user_target)
+
+        elif choice == "4 - Devices in a specific Rack":
+            user_query = choice4()
+            user_target = "Interfaces"
+            print_output(user_query, user_target)
+    pass
+
+if __name__ == "__main__":
+  main()
+
+##############
+# MAIN - END #
+##############
